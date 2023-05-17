@@ -64,6 +64,83 @@ const UniverseCanvas = () => {
           rotation: new THREE.Euler( -0.005, -1.047,0, 'XYZ' ),
           title: "Welcome to your ride",
           subtitle: `Did you know that there's ${length} people in space right now?`,
+        },
+        {
+          cameraRailDist: 1,
+          position: new Vector3(
+            curvePoints[3].x-3,
+            curvePoints[3].y,
+            curvePoints[3].z-1
+          ),
+          rotation: new THREE.Euler( -0.0039, -1.047,0, 'XYZ' ),
+          title: "Welcome to your ride",
+          subtitle: `Did you know that there's ${length} people in space right now?`,
+        },
+        // {
+        //   cameraRailDist: 1,
+        //   position: new Vector3(
+        //     curvePoints[4].x +3,
+        //     curvePoints[4].y,
+        //     curvePoints[4].z-1
+        //   ),
+        //   rotation: new THREE.Euler( 0,0,0, 'XYZ' ),
+        //   title: "Welcome to your ride",
+        //   subtitle: `Did you know that there's ${length} people in space right now?`,
+        // },
+        { // earth
+          cameraRailDist: 1,
+          position: new Vector3(33-3,3-2,-19
+            // curvePoints[4].x +3,
+            // curvePoints[4].y,
+            // curvePoints[4].z-1
+          ),
+          rotation: new THREE.Euler( -0.013,0.787,0, 'XYZ' ),
+          title: "Welcome to your ride",
+          subtitle: `Did you know that there's ${length} people in space right now?`,
+        },
+        { // mars
+          cameraRailDist: 1,
+          position: new Vector3(
+            curvePoints[5].x-3,
+            curvePoints[5].y-1,
+            curvePoints[5].z+2
+          ),
+          rotation: new THREE.Euler( -0.01,1.05,0, 'XYZ' ),
+          title: "Welcome to your ride",
+          subtitle: `Did you know that there's ${length} people in space right now?`,
+        },
+        {
+          cameraRailDist: 1,
+          position: new Vector3(
+            curvePoints[6].x,
+            curvePoints[6].y-1,
+            curvePoints[6].z+2
+          ),
+          rotation: new THREE.Euler( 0.0018,1.05,0, 'XYZ' ),
+          title: "Welcome to your ride",
+          subtitle: `Did you know that there's ${length} people in space right now?`,
+        },
+        {
+          cameraRailDist: 1,
+          position: new Vector3(
+            curvePoints[7].x-1,
+            curvePoints[7].y,
+            curvePoints[7].z-2
+          ),
+          rotation: new THREE.Euler( 0.013,-0.32,0, 'XYZ' ),
+          title: "Welcome to your ride",
+          subtitle: `Did you know that there's ${length} people in space right now?`,
+        },
+        {
+          cameraRailDist: 1,
+          position: new Vector3(
+            curvePoints[8].x-3,
+            curvePoints[8].y,
+            curvePoints[8].z
+          ),
+          rotation: new THREE.Euler( 0.002,-0.109,0, 'XYZ' ),
+          title: "Welcome to your ride",
+          subtitle: `Did you know that there's ${length} people in space right now?`,
         }
       ];
 
@@ -72,15 +149,6 @@ const UniverseCanvas = () => {
       console.error('Error fetching data:', error);
     }
   }
-
-  useEffect(() => {
-    async function fetchData() {
-      const data = await fetchPlanetsData();
-      setTextData(data);
-    }
-
-    fetchData();
-  }, []);
   
   // responsive perspective camera setup according to window size 
   useEffect(() => {
@@ -109,11 +177,14 @@ const UniverseCanvas = () => {
       new THREE.Vector3(21, 0, 0),
       // new THREE.Vector3(28, 0, -8),
       new THREE.Vector3(28.5, 0.5, -11),
-      new THREE.Vector3(28, 5, -33),
-      new THREE.Vector3(18, 6, -40),
-      new THREE.Vector3(5, 0, -50),
-      new THREE.Vector3(7, 0, -60),
-      new THREE.Vector3(7, 0, -64),
+      new THREE.Vector3(30, 1, -13),
+      new THREE.Vector3(33, 2, -16),
+      // new THREE.Vector3(34, 2.5, -17),
+      new THREE.Vector3(27, 5, -33),  // 28 4 -31
+      new THREE.Vector3(18, 5, -40), // 19 6 -39/40
+      new THREE.Vector3(5, 3, -50), // 5 2 -52
+      new THREE.Vector3(7, 0, -60), // yes
+      new THREE.Vector3(7, 0, -62),
     ],
     []
   );
@@ -122,7 +193,7 @@ const UniverseCanvas = () => {
     return new THREE.CatmullRomCurve3(
       curvePoints,
       false,
-      "catmullrom",
+      "centripetal",
       0.5
     );
   }, []);
@@ -133,8 +204,8 @@ const UniverseCanvas = () => {
 
   const shape = useMemo(() => {
     const shape = new THREE.Shape();
-    shape.moveTo(0, -0.2);
-    shape.lineTo(0, 0.2);
+    shape.moveTo(0, -0.015);
+    shape.lineTo(0, 0.018);
 
     return shape;
   }, [curve]);
@@ -183,7 +254,8 @@ const UniverseCanvas = () => {
       );
       cameraGroup.current.quaternion.slerp(targetCameraQuaternion, delta);
       cameraGroup.current.position.lerp(curPoint, delta*24);
-      console.log(cameraGroup.current.rotation);
+      // console.log(cameraGroup.current.rotation);
+      // console.log(cameraGroup.current.position);
     });
 
   }
@@ -217,8 +289,6 @@ const UniverseCanvas = () => {
           <group ref={cameraGroup}>
             <UpdateFrame />
             <PerspectiveCamera position={config.position} fov={config.pov} rotation={[0,0,0]} makeDefault />
-            {/* <SetPerspectiveCamera /> */}
-            {/* <PerspectiveCamera {...config} /> */}
           </group>
           <Planets />
         </ScrollControls>
