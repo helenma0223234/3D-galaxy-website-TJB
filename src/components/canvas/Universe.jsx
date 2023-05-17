@@ -1,5 +1,5 @@
 import React, { Suspense, useMemo, useRef, useEffect, useState } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { PerspectiveCamera, Preload , useScroll, ScrollControls} from "@react-three/drei";
 import { useLoader } from "@react-three/fiber";
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
@@ -8,6 +8,7 @@ import { Euler, Group, Vector3 } from "three";
 
 import { TextSection } from "./TextSection";
 import CanvasLoader from "../Loader";
+import { fetchPlanetsData, fetchPeopleData } from '../Api';
 const LINE_NB_POINTS = 2000;
 
 const Planets = () => {
@@ -27,6 +28,59 @@ const Planets = () => {
 
 const UniverseCanvas = () => {
   const [config, setConfig] = useState({ fov: 60, position: [0, 0, 5] });
+  const [planetData, setPlanetData] = useState([]);
+  const [textSections, setTextSections] = useState([]);
+
+  useEffect(() => {
+    fetchGenerateText();
+  }, []);
+
+  async function fetchGenerateText() {
+    try {
+      const { data, length } = await fetchPeopleData();
+      const fetchedPlanetData = await fetchPlanetsData();
+      setPlanetData(fetchedPlanetData);
+      // console.log(planetData);                              
+
+      const sections = [
+        {
+          cameraRailDist: -1,
+          position: new Vector3(
+            curvePoints[0].x - 3,
+            curvePoints[0].y,
+            curvePoints[0].z-1
+          ),
+          rotation: new THREE.Euler( 0, -0.2768,0, 'XYZ' ),
+          title: "Welcome to your ride",
+          subtitle: `Did you know that there's ${length} people in space right now?`,
+        },
+        {
+          cameraRailDist: 1,
+          position: new Vector3(
+            curvePoints[2].x +3,
+            curvePoints[2].y,
+            curvePoints[2].z-1
+          ),
+          rotation: new THREE.Euler( -0.005, -1.047,0, 'XYZ' ),
+          title: "Welcome to your ride",
+          subtitle: `Did you know that there's ${length} people in space right now?`,
+        }
+      ];
+
+      setTextSections(sections);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      const data = await fetchPlanetsData();
+      setTextData(data);
+    }
+
+    fetchData();
+  }, []);
   
   // responsive perspective camera setup according to window size 
   useEffect(() => {
@@ -49,13 +103,12 @@ const UniverseCanvas = () => {
     };
   }, []);
 
-  console.log(config);
-
   const curvePoints = useMemo(
     () => [
       new THREE.Vector3(20, 0, 10),
       new THREE.Vector3(21, 0, 0),
-      new THREE.Vector3(28, 0, -8),
+      // new THREE.Vector3(28, 0, -8),
+      new THREE.Vector3(28.5, 0.5, -11),
       new THREE.Vector3(28, 5, -33),
       new THREE.Vector3(18, 6, -40),
       new THREE.Vector3(5, 0, -50),
@@ -86,60 +139,16 @@ const UniverseCanvas = () => {
     return shape;
   }, [curve]);
 
-  const textSections = useMemo(() => {
-    return [
-      {
-        cameraRailDist: -1,
-        position: new Vector3(
-          curvePoints[0].x - 3,
-          curvePoints[0].y,
-          curvePoints[0].z
-        ),
-        title: "Welcome",
-        subtitle: `Have a seat and enjoy the ride!`,
-      }
-    ]
-  });
+  function kelvinToFahrenheit(kelvin) {
+    if (typeof kelvin !== 'number') {
+      throw new Error('Invalid, must be a number.');
+    }
+  
+    const f = (kelvin - 273.15) * (9 / 5) + 32;
+    return f;
+  }
 
   const cameraGroup = useRef();
-
-  // function SetPerspectiveCamera() {
-  //   // const camera = useThree(state => state.camera)
-  //   useEffect(() => {
-  //     function handleWindowResize() {
-  //       if (window.innerWidth > window.innerHeight) {
-  //         // LANDSCAPE
-  //         useThree(({camera}) => {
-  //           camera.position.set(0, 0, 5);
-  //           camera.fov.set(60);
-  //         });
-  //         // camera.current.fov = 60;
-  //         // camera.current.position.z = 5;
-  //       } else {
-  //         // PORTRAIT
-  //         // camera.current.fov = 80;
-  //         // camera.current.position.z = 2;
-  //         useThree(({camera}) => {
-  //           camera.position.set(0, 0, 5);
-  //           camera.fov.set(60);
-  //         });
-  //       }
-  //       // camera.current.updateProjectionMatrix();
-  //     }
-  //     handleWindowResize();
-
-  //     window.addEventListener('resize', handleWindowResize);
-  //     return () => {
-  //       window.removeEventListener('resize', handleWindowResize);
-  //     };
-  //   }, []);
-  
-  //   //   window.addEventListener('resize', handleWindowResize);
-  //   //   return () => {
-  //   //     window.removeEventListener('resize', handleWindowResize);
-  //   //   };
-  //   // }, [camera]);
-  // }
 
   function UpdateFrame() {
 
@@ -174,7 +183,7 @@ const UniverseCanvas = () => {
       );
       cameraGroup.current.quaternion.slerp(targetCameraQuaternion, delta);
       cameraGroup.current.position.lerp(curPoint, delta*24);
-      // console.log(cameraGroup.current.position);
+      console.log(cameraGroup.current.rotation);
     });
 
   }
