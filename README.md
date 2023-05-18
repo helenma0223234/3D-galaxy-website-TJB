@@ -1,7 +1,7 @@
 # 3D Galaxy Website Reat Three JS Fiber
 
 built for DALI dev challenge 2023 Summer.
-deployed: [URL](https://threed-galaxy-website.onrender.com)]
+deployed: [URL](https://threed-galaxy-website.onrender.com)
 
 ## Stack
 - react
@@ -10,6 +10,9 @@ deployed: [URL](https://threed-galaxy-website.onrender.com)]
 ### APIs
 The Solar System OpenData
 How Many People Are In Space Right Now
+
+### 'npm dev start'
+to run locally, and open your localhost, usually part 3000
 
 ### Source/inspo
 - https://github.com/adrianhajdin/project_3D_developer_portfolio (folder structures, navbar setup, tailwindcss styling)
