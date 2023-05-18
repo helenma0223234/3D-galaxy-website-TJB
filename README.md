@@ -1,7 +1,7 @@
 # 3D Galaxy Website Reat Three JS Fiber
 
 built for DALI dev challenge 2023 Summer.
-[deployed url](https://frontend-starterpack-illustration.onrender.com)
+deployed: [https://frontend-starterpack-illustration.onrender.com](https://threed-galaxy-website.onrender.com))
 
 ## Stack
 - react
