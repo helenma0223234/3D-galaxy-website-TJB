@@ -11,5 +11,5 @@ The Solar System OpenData
 How Many People Are In Space Right Now
 
 ### Source/inspo
-https://github.com/adrianhajdin/project_3D_developer_portfolio
-https://github.com/wass08/r3f-wawatmos-part-4
+- https://github.com/adrianhajdin/project_3D_developer_portfolio
+- https://github.com/wass08/r3f-wawatmos-part-4
