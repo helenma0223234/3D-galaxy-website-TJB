@@ -2,7 +2,7 @@
 
 export async function fetchPeopleData() {
   try {
-    const response = await fetch('http://api.open-notify.org/astros.json');
+    const response = await fetch('http://api.open-notify.org/astros.json', {mode: 'cors'});
     const data = await response.json();
     const length = data.people.length;
     return {data, length};
