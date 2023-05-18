@@ -21,10 +21,9 @@ export async function fetchPlanetsData() {
   
   try {
     const planetData = await Promise.all(requests);
-    // console.log(planetData);
     return planetData;
   } catch (error) {
-    console.error('Error fetching planet data:', error);
+    console.error(error);
     throw error;
   }
 }
