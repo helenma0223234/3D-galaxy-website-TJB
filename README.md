@@ -1,4 +1,4 @@
-# 3D Galaxy Website Reat Three JS Fiber
+# Responsive 3D Galaxy Website Reat Three JS Fiber
 
 built for DALI dev challenge 2023 Summer.
 deployed: [URL](https://threed-galaxy-website.onrender.com)
