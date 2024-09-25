@@ -27,9 +27,9 @@ export default {
       screens: {
         xs: "450px",
       },
-      backgroundImage: {
-        "hero-pattern": "url('/src/assets/star-bg.jpg')",
-      },
+      // backgroundImage: {
+      //   "hero-pattern": "url('/src/assets/star-bg.jpg')",
+      // },
     },
   },
   plugins: [],
